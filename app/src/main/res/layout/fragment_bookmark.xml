@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/srl_content"
+    android:background="@color/white"
+    tools:context=".ui.fragment.BookmarkFragment"
+    >
+    <com.scwang.smartrefresh.header.MaterialHeader
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.scwang.smartrefresh.header.MaterialHeader>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:scrollbars="none">
+
+
+         <LinearLayout
+        android:id="@+id/ll_no_data_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:ignore="UseCompoundDrawables">
+            <ImageView
+                android:id="@+id/imageadd"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic__addbooks"
+                tools:ignore="ContentDescription"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nobook"
+                android:layout_marginTop="10dp"
+                android:textSize="16sp"
+                tools:ignore="DuplicateIds" />
+        </LinearLayout>
+    <com.example.read.custom.DragSortGridView
+        android:id="@+id/gv_book"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnWidth="100dp"
+        android:horizontalSpacing="10dp"
+        android:listSelector="@android:color/transparent"
+        android:numColumns="auto_fit"
+        android:scrollbars="none"
+        android:verticalSpacing="10dp">
+    </com.example.read.custom.DragSortGridView>
+
+    </RelativeLayout>
+    <com.scwang.smartrefresh.layout.footer.ClassicsFooter
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.scwang.smartrefresh.layout.footer.ClassicsFooter>
+
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>

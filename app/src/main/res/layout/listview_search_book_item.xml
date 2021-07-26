@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/white"
+    android:id="@+id/book_item"
+    android:padding="5dp">
+
+    <ImageView
+        android:id="@+id/tv_book_img"
+        android:layout_width="80dp"
+        android:layout_height="110dp"
+        android:scaleType="fitXY"
+        android:src="@mipmap/no_image"
+        tools:ignore="ContentDescription" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_book_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/书名"
+                android:ellipsize="end"
+                android:textSize="16sp"
+                android:maxLines="1"
+
+                android:textColor="@color/black"/>
+
+<!--
+            <TextView
+                android:id="@+id/tv_book_source"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/天籁小说"
+                android:ellipsize="end"
+                android:textSize="12sp"
+                android:maxLines="1"
+                android:textColor="#999999"/>
+-->
+            <TextView
+                android:id="@+id/tv_book_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:layout_marginTop="5dp"
+                android:paddingBottom="5dp"
+                android:text="@string/简介"
+                android:ellipsize="end"
+                android:textSize="12sp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
+
+
+            <TextView
+                android:id="@+id/tv_book_author"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/作者"
+                android:maxLines="3"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/tv_book_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/类型"
+                android:maxLines="3"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
+
+
+
+
+
+    </RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+</LinearLayout>

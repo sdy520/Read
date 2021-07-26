@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".ui.activity.SearchBookActivity"
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/gray">
+
+            <LinearLayout
+                android:id="@+id/ll_title_back"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingStart="10dp"
+                tools:ignore="RtlSymmetry">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dip"
+                    android:onClick="onback"
+                    android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                    tools:ignore="ContentDescription" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="100dp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/search"
+                android:textColor="@color/white"
+                android:textSize="19sp"
+                android:layout_marginStart="100dp" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:src="@color/sys_line"
+            tools:ignore="ContentDescription" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:background="@color/gray"
+            android:paddingBottom="10dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="10dp">
+
+            <EditText
+                android:id="@+id/et_search_key"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_weight="2"
+                android:inputType="text"
+                android:imeOptions="actionSearch"
+                android:background="@drawable/search_et_backcolor"
+                android:hint="@string/search_hint"
+                tools:ignore="Autofill" />
+
+            <TextView
+                android:id="@+id/tv_search_conform"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_weight="8"
+                android:background="@drawable/search_btn_backcolor"
+                android:gravity="center"
+                android:text="@string/search"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/ll_suggest_books_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+
+            <me.gujun.android.taggroup.TagGroup
+                android:id="@+id/tg_suggest_book"
+                style="@style/TagGroup"
+                android:layout_marginTop="10dp"
+                app:atg_borderColor="@color/sys_suggest_line"
+                app:atg_horizontalPadding="10dp"
+                app:atg_textColor="@color/black"
+                app:atg_textSize="14sp"
+                app:atg_verticalSpacing="10dp" />
+
+            <LinearLayout
+                android:id="@+id/ll_refresh_suggest_books"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_refresh_24"
+                    android:onClick="imagechange"
+                    android:focusable="true"
+                    android:focusableInTouchMode="false"
+                    android:clickable="true"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/textchange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/change"
+                    android:textColor="@color/black"
+                    android:focusable="true"
+                    android:focusableInTouchMode="false"
+                    android:clickable="true"
+                    android:onClick="imagechange"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_history_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <ListView
+                android:id="@+id/lv_history_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:divider="@color/nothing"
+                android:fadingEdge="none"
+                android:overScrollMode="never"
+                android:scrollbars="none">
+
+            </ListView>
+
+            <LinearLayout
+                android:id="@+id/ll_clear_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_delete"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/clear_history"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/lv_search_books_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone">
+                </androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+</RelativeLayout>

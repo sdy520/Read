@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.example.read.custom.MyTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/nothing"
+            android:cursorVisible="false"
+            android:inputType="none"
+            android:lineSpacingMultiplier="1.5"
+            android:textColor="@color/sys_protect_eye_word"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <com.example.read.custom.MyTextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:background="@color/nothing"
+            android:cursorVisible="false"
+            android:inputType="none"
+            android:lineSpacingMultiplier="1.5"
+            android:textColor="@color/sys_protect_eye_word"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tv_loading_error_tips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="@string/refresh_again"
+        android:visibility="gone" />
+
+
+</RelativeLayout>

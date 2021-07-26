@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:layout_gravity="center_vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_bottom_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/sys_dialog_setting_bg"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        tools:ignore="UselessParent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center">
+
+            <ImageView
+               android:layout_marginLeft="5dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@mipmap/r6"
+                android:layout_marginStart="5dp"
+                tools:ignore="ContentDescription" />
+
+            <SeekBar
+                android:id="@+id/sb_brightness_progress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:maxHeight="1dp"
+                android:minHeight="1dp"
+                android:progress="50"
+                android:progressDrawable="@drawable/seekbar_bg"
+                android:thumb="@mipmap/thumb" />
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@mipmap/r4"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/tv_system_brightness"
+                android:layout_marginLeft="20dp"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="@string/xitong"
+                android:textSize="15sp"
+                android:background="@drawable/setting_btn_bg"
+                android:textColor="@drawable/setting_btn_bg_color"
+                android:layout_marginStart="20dp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_reduce_text_size"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:background="@drawable/setting_btn_bg2"
+                android:layout_weight="1"
+                android:text="@string/Ajian"
+                android:textColor="@color/sys_dialog_setting_word_bright"/>
+
+            <TextView
+                android:id="@+id/tv_text_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/_20"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textColor="@color/sys_dialog_setting_word_bright"/>
+
+            <TextView
+                android:id="@+id/tv_increase_text_size"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/setting_btn_bg2"
+                android:textSize="18sp"
+                android:text="@string/Ajia"
+                android:textColor="@color/sys_dialog_setting_word_bright"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center|left"
+            tools:ignore="RtlHardcoded">
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/iv_common_style"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/setting_common_style_btn_bg"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/iv_leather_style"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/setting_leather_style_btn_bg"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/iv_protect_eye_style"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/setting_protect_eye_style_btn_bg"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/iv_breen_style"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/setting_breen_style_btn_bg"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/iv_blue_deep_style"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/setting_blue_deep_style_btn_bg"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center|left"
+            tools:ignore="RtlHardcoded">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/sys_dialog_setting_word_bright"
+                android:text="@string/slow"/>
+
+            <SeekBar
+                android:id="@+id/sb_auto_scroll_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progress="50"
+                android:layout_weight="1"
+                android:maxHeight="1dp"
+                android:minHeight="1dp"
+                android:progressDrawable="@drawable/seekbar_bg"
+                android:thumb="@mipmap/thumb"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/sys_dialog_setting_word_bright"
+                android:text="@string/quick"/>
+
+            <TextView
+                android:id="@+id/tv_auto_scroll"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:background="@drawable/setting_btn_bg2"
+                android:layout_weight="2.3"
+                android:text="@string/zidonggunping"
+                android:textColor="@color/sys_dialog_setting_word_bright"/>
+
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>
