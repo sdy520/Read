@@ -31,6 +31,7 @@ import com.example.read.util.APPCONST;
 import com.example.read.util.BiQuGeReadUtil;
 import com.example.read.databinding.ActivitySearchBookBinding;
 import com.example.read.ui.adapter.SearchBookAdapter;
+import com.example.read.util.DuoBenReadUtil;
 import com.example.read.util.OkHttpUtil;
 import com.example.read.util.TianLaiReadUtil;
 import com.example.read.util.URLCONST;
@@ -189,20 +190,41 @@ public class SearchBookActivity extends Activity {
     private void getData(){
         //清除之前输入的图书搜索记录
         mbookList.clear();
-        String url = URLCONST.method_tl_search+searchKey;
-        OkHttpUtil.getInstance().Get(url, new Callback() {
+        String url1 = URLCONST.method_tl_search+searchKey;
+        String url2 = URLCONST.method_db_search+searchKey;
+        OkHttpUtil.getInstance().Get(url1, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Log.e(TAG, "天籁小说get回调搜索内容失败：");
+                mHandler.sendMessage(mHandler.obtainMessage(3));
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
-
+                Log.e(TAG, "111");
                 mbookList.addAll(TianLaiReadUtil.getBooksFromSearchHtml(body));
+                Log.e(TAG, "222");
                 Log.e(TAG, mbookList.toString());
+
+                mHandler.sendMessage(mHandler.obtainMessage(2));
+            }
+        });
+        OkHttpUtil.getInstance().Get(url2, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Log.e(TAG, "多本小说get回调搜索内容失败：");
                 mHandler.sendMessage(mHandler.obtainMessage(3));
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
+                Log.e(TAG, "333");
+                mbookList.addAll(DuoBenReadUtil.getBooksFromSearchHtml(body));
+                Log.e(TAG, "444");
+                Log.e(TAG, mbookList.toString());
+                //mHandler.sendMessage(mHandler.obtainMessage(3));
                 mHandler.sendMessage(mHandler.obtainMessage(2));
             }
         });
@@ -252,7 +274,7 @@ public class SearchBookActivity extends Activity {
             }
         });*
     }*/
-    private void getDatainfo(){
+    /*private void getDatainfo(){
         Log.e("ss",bookNameUrls2.size()+"");
         //没有搜索到书
         if(bookNameUrls2.size()==0){
@@ -268,7 +290,7 @@ public class SearchBookActivity extends Activity {
                 max = bookNameUrls.size();
             }
             for (int i = 0; i < max; i++) {*/
-                String url = bookNameUrls2.get(i).getBooknameurl();
+              /*  String url = bookNameUrls2.get(i).getBooknameurl();
                 OkHttpUtil.getInstance().Get(url, new okhttp3.Callback() {
                     @Override
                     public void onFailure(@NotNull okhttp3.Call call, @NotNull IOException e) {
@@ -289,7 +311,7 @@ public class SearchBookActivity extends Activity {
                 });
             }
         }
-    }
+    }*/
 
     /**
      * 初始化历史列表

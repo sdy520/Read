@@ -396,6 +396,7 @@ public class BookInfoActivity extends BaseActivity {
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 //String body = Objects.requireNonNull(response.body()).string();
                 String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
+                Log.e(TAG, body);
                 chapter.setContent(TianLaiReadUtil.getContentFormHtml(body));
                 mHandler.sendMessage(mHandler.obtainMessage(1));
                 Log.e("body", "2222");

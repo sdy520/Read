@@ -29,15 +29,21 @@ public class TianLaiReadUtil {
      * @return
      */
     public static String getContentFormHtml(String html) {
-        Document doc = Jsoup.parse(html);
+        char c = 160;
+        String spaec = "" + c;
+        String temp=html.replace("&nbsp;",spaec);
+        Document doc = Jsoup.parse(temp);
         Element divContent = doc.getElementById("content");
         //解决划动进度条跳转章节闪退问题
         if (divContent != null) {
             String content = Html.fromHtml(divContent.html()).toString();
+            Log.e("",content);
             content =content.replace("\n\n","\n");
-            char c = 160;
+            //content =content.replaceAll(" ","  ");
+            content =content.replace("\\s+", "    ");
+          /*  char c = 160;
             String spaec = "" + c;
-            content = content.replace(spaec, "  ");
+            content = content.replaceAll(spaec, "  ");*/
             return content;
         } else {
             return "";
@@ -52,7 +58,13 @@ public class TianLaiReadUtil {
     public static ArrayList<Chapter> getChaptersFromHtml(String html, Book book) {
         ArrayList<Chapter> chapters = new ArrayList<>();
         Document doc = Jsoup.parse(html);
-        Element divList = doc.getElementById("list");
+        Element divList = null;
+        if (URLCONST.tianlai.equals(book.getSource())) {
+            divList = doc.getElementById("list");
+        }else if(URLCONST.duoben.equals(book.getSource())){
+            divList = doc.getElementById("book");
+        }
+        assert divList != null;
         Element dl = divList.getElementsByTag("dl").get(0);
 
         String lastTile = null;
@@ -72,10 +84,9 @@ public class TianLaiReadUtil {
                 String url = a.attr("href");
                 if (StringHelper.isEmpty(book.getSource()) || URLCONST.tianlai.equals(book.getSource())) {
                     url = URLCONST.nameSpace_tianlai + url;
+                }else if (URLCONST.duoben.equals(book.getSource())) {
+                    url = URLCONST.nameSpace_duoben + url;
                 }
-               /* else if (BookSource.biquge.toString().equals(book.getSource())) {
-                    url = book.getChapterUrl() + url;
-                }*/
                 chapter.setUrl(url);
                 chapters.add(chapter);
                 lastTile = title;
@@ -101,20 +112,14 @@ public class TianLaiReadUtil {
             Element img = element.getElementsByTag("img").first();
             book.setImgUrl(URLCONST.nameSpace_tianlai + img.attr("src"));
             Element info = element.getElementsByClass("result-game-item-detail").first();
-
             for (Element el : info.children()) {
-
                 String infoStr = el.text();
-
                 if (el.tagName().equals("h3")){
-
                     Element a = el.getElementsByTag("a").first();
                     book.setChapterUrl(URLCONST.nameSpace_tianlai + a.attr("href"));
                     book.setBook_name(a.text());
-
                 }else if(el.className().equals("intro")){
                     book.setDesc(el.text());
-
                 }else if (infoStr.contains("作者：")) {
                     infoStr = infoStr.substring(0,infoStr.indexOf("状态"));
                     book.setAuthor(infoStr.replace("作者：", "").replace(" ", ""));
@@ -128,9 +133,7 @@ public class TianLaiReadUtil {
                     book.setNewestChapterUrl(URLCONST.nameSpace_tianlai + newChapter.attr("href"));
                     book.setNewestChapterTitle(newChapter.text());
                 }
-
             }
-
             book.setSource(URLCONST.tianlai);
             books.add(book);
 
