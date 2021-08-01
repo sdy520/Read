@@ -5,21 +5,21 @@ package com.example.read.util;
  */
 
 public class URLCONST {
-
+    //小说网站名称
+    public static String tianlai = "天籁小说";
+    public static String bxwx = "笔下文学";
     // 命名空间
-    public static String nameSpace_tianlai = "https://www.233txt.com/";
+    public static String nameSpace_tianlai = "https://www.tlai.cc";
+    public static String nameSpace_bxwx = "https://www.bxwxorg.com/";
 
-    public static String nameSpace_biquge = "https://www.xxbqg.com/";
 
     public static String nameSpace_system = "https://10.10.123.31:8080/jeecg";
 
     public static boolean isRSA = false;
 
     // 搜索小说
-    public static String method_buxiu_search = "https://www.233txt.com/search.php";
+    public static String method_tl_search = "https://www.tlai.cc/search.php?searchkey=";
 
-    public static String method_bqg_search = nameSpace_biquge + "/modules/article/search.php";
-//    searchkey=%C1%E9%D3%F2
 
     // 获取最新版本号
     public static String method_getCurAppVersion = nameSpace_system + "/mReaderController.do?getCurAppVersion";

@@ -134,7 +134,7 @@ public class RankingActivity extends Activity {
                 public void onResponse(@NotNull okhttp3.Call call, @NotNull okhttp3.Response response) throws IOException {
                     String body = response.body().string();
                     try {
-                        BiQuGeReadUtil.getBookInfo(body, mbookList);
+                        mbookList.addAll(BiQuGeReadUtil.getBookInfo(body));
                     } catch (IndexOutOfBoundsException e) {
                         mHandler.sendMessage(mHandler.obtainMessage(3));
                     }

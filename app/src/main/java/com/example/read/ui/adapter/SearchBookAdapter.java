@@ -25,18 +25,20 @@ public class SearchBookAdapter extends RecyclerView.Adapter<SearchBookAdapter.Vi
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView imageView;
         TextView textView1;
-        //TextView textView2;
+        TextView textView2;
         TextView textView3;
         TextView textView4;
         TextView textView5;
+        TextView textView6;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView=itemView.findViewById(R.id.tv_book_img);
             textView1=itemView.findViewById(R.id.tv_book_name);
-            //textView2=itemView.findViewById(R.id.tv_book_source);
+            textView2=itemView.findViewById(R.id.tv_book_source);
             textView3=itemView.findViewById(R.id.tv_book_desc);
             textView4=itemView.findViewById(R.id.tv_book_author);
             textView5=itemView.findViewById(R.id.tv_book_type);
+            textView6=itemView.findViewById(R.id.tv_book_newchapter);
         }
     }
 
@@ -70,10 +72,11 @@ public class SearchBookAdapter extends RecyclerView.Adapter<SearchBookAdapter.Vi
                 .placeholder(R.mipmap.no_image)
                 .into(holder.imageView);
         holder.textView1.setText(book.getBook_name());
-        //holder.textView2.setText(book.getSource());
+        holder.textView2.setText(book.getSource());
         holder.textView3.setText(book.getDesc());
         holder.textView4.setText(book.getAuthor());
         holder.textView5.setText(book.getType());
+        holder.textView6.setText(book.getNewestChapterTitle());
 
            holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

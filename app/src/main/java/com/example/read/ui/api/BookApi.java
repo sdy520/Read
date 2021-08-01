@@ -13,6 +13,7 @@ public interface BookApi {
     //Call<ResponseBody> getJsonData(@Query("q") String book_name);
     ///modules/article/search.php
     @GET("modules/article/search.php")
+    //Call<ResponseBody> getData(@Query("searchkey") String book_name);
     Call<String> getData(@Query("searchkey") String book_name);
 }
 

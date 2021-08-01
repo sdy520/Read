@@ -43,6 +43,7 @@ import com.example.read.util.OkHttpUtil;
 import com.example.read.util.ReadStyle;
 import com.example.read.util.StringHelper;
 import com.example.read.util.SysManager;
+import com.example.read.util.TianLaiReadUtil;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 
@@ -205,9 +206,10 @@ public class BookInfoActivity extends BaseActivity {
 
                         @Override
                         public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                            String body = Objects.requireNonNull(response.body()).string();
+                           // String body = Objects.requireNonNull(response.body()).string();
+                            String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
                             if (!StringHelper.isEmpty(body))
-                                mChapters.get(positionnow).setContent(BiQuGeReadUtil.getContentFormHtml(body));
+                                mChapters.get(positionnow).setContent(TianLaiReadUtil.getContentFormHtml(body));
                             //mChapterService.saveOrUpdateChapter(mChapters.get(chapterNum));
                             mHandler.sendMessage(mHandler.obtainMessage(4, positionnow, 0));
                             Log.e("body", "333");
@@ -318,10 +320,12 @@ public class BookInfoActivity extends BaseActivity {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String body = Objects.requireNonNull(response.body()).string();
+                //String body = Objects.requireNonNull(response.body()).string();
+                String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
                 Log.e(TAG,body);
                 try {
-                    mChapters = BiQuGeReadUtil.getChaptersFromHtml(body,mBook);
+                    mChapters = TianLaiReadUtil.getChaptersFromHtml(body,mBook);
+                    Log.e(TAG,mChapters.toString());
                     //updateAllOldChapterData(mChapters);
                     mInvertedOrderChapters.clear();
                     mInvertedOrderChapters.addAll(mChapters);
@@ -390,8 +394,9 @@ public class BookInfoActivity extends BaseActivity {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String body = Objects.requireNonNull(response.body()).string();
-                chapter.setContent(BiQuGeReadUtil.getContentFormHtml(body));
+                //String body = Objects.requireNonNull(response.body()).string();
+                String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
+                chapter.setContent(TianLaiReadUtil.getContentFormHtml(body));
                 mHandler.sendMessage(mHandler.obtainMessage(1));
                 Log.e("body", "2222");
             }
@@ -680,9 +685,10 @@ public class BookInfoActivity extends BaseActivity {
 
                                 @Override
                                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                                    String body = Objects.requireNonNull(response.body()).string();
+                                    //String body = Objects.requireNonNull(response.body()).string();
+                                    String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
                                     if(!StringHelper.isEmpty(body))
-                                        mChapters.get(chapterNum).setContent(BiQuGeReadUtil.getContentFormHtml(body));
+                                        mChapters.get(chapterNum).setContent(TianLaiReadUtil.getContentFormHtml(body));
                                     //mChapterService.saveOrUpdateChapter(mChapters.get(chapterNum));
                                     mHandler.sendMessage(mHandler.obtainMessage(4, chapterNum, 0));
                                     Log.e("body", "333");

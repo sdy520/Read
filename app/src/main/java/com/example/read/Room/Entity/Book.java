@@ -24,8 +24,8 @@ public class Book implements Serializable {
     private Integer id;
     @ColumnInfo(name ="book_name")
     private String book_name;//书名
-    //@ColumnInfo(name ="source")
-    //private String source;
+    @ColumnInfo(name ="source")
+    private String source;
     @ColumnInfo(name ="chapterUrl")
     private String chapterUrl;//书目Url
     @ColumnInfo(name ="imgUrl")
@@ -36,8 +36,8 @@ public class Book implements Serializable {
     private String author;//作者
     @ColumnInfo(name ="type")
     private String type;//类型
-    //@ColumnInfo(name ="updateDate")
-    //private String updateDate;//更新时间
+    @ColumnInfo(name ="updateDate")
+    private String updateDate;//更新时间
 
 
    // @ColumnInfo(name ="newestChapterId")
@@ -58,7 +58,52 @@ public class Book implements Serializable {
     private int lastReadPosition;//上次阅读到的章节的位置
     private int noReadNum;//未读章数量
 
-    @Ignore
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", book_name='" + book_name + '\'' +
+                ", source='" + source + '\'' +
+                ", chapterUrl='" + chapterUrl + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
+                ", desc='" + desc + '\'' +
+                ", author='" + author + '\'' +
+                ", type='" + type + '\'' +
+                ", updateDate='" + updateDate + '\'' +
+                ", newestChapterId='" + newestChapterId + '\'' +
+                ", newestChapterTitle='" + newestChapterTitle + '\'' +
+                ", newestChapterUrl='" + newestChapterUrl + '\'' +
+                ", historyChapterId='" + historyChapterId + '\'' +
+                ", historyChapterNum=" + historyChapterNum +
+                ", sortCode=" + sortCode +
+                ", chapterTotalNum=" + chapterTotalNum +
+                ", lastReadPosition=" + lastReadPosition +
+                ", noReadNum=" + noReadNum +
+                '}';
+    }
+
+    public Book(Integer id, String book_name, String source, String chapterUrl, String imgUrl, String desc, String author, String type, String updateDate, String newestChapterId, String newestChapterTitle, String newestChapterUrl, String historyChapterId, int historyChapterNum, int sortCode, int chapterTotalNum, int lastReadPosition, int noReadNum) {
+        this.id = id;
+        this.book_name = book_name;
+        this.source = source;
+        this.chapterUrl = chapterUrl;
+        this.imgUrl = imgUrl;
+        this.desc = desc;
+        this.author = author;
+        this.type = type;
+        this.updateDate = updateDate;
+        this.newestChapterId = newestChapterId;
+        this.newestChapterTitle = newestChapterTitle;
+        this.newestChapterUrl = newestChapterUrl;
+        this.historyChapterId = historyChapterId;
+        this.historyChapterNum = historyChapterNum;
+        this.sortCode = sortCode;
+        this.chapterTotalNum = chapterTotalNum;
+        this.lastReadPosition = lastReadPosition;
+        this.noReadNum = noReadNum;
+    }
+
+    /*@Ignore
     public Book(Integer id,String book_name,String chapterUrl,String imgUrl,String desc,
                 String author,String type) {
         this.id = id;
@@ -69,23 +114,28 @@ public class Book implements Serializable {
         this.desc=desc;
         this.author=author;
         this.type=type;
-    }
+    }*/
 
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", book_name='" + book_name + '\'' +
-                ", chapterUrl='" + chapterUrl + '\'' +
-                ", imgUrl='" + imgUrl + '\'' +
-                ", desc='" + desc + '\'' +
-                ", author='" + author + '\'' +
-                ", type='" + type + '\'' +
-                '}';
-    }
+
 
     public Book() {
 
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
     }
 
     public int getNoReadNum() {

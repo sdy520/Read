@@ -32,23 +32,32 @@ import com.example.read.util.BiQuGeReadUtil;
 import com.example.read.databinding.ActivitySearchBookBinding;
 import com.example.read.ui.adapter.SearchBookAdapter;
 import com.example.read.util.OkHttpUtil;
+import com.example.read.util.TianLaiReadUtil;
+import com.example.read.util.URLCONST;
+import com.example.read.util.YingSxReadUtil;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class SearchBookActivity extends Activity {
+    private static String TAG = "SearchBookActivity";
     SearchBookAdapter searchBookAdapter;
     private SearchHistoryAdapter mSearchHistoryAdapter;
     private SearchHistoryDao historyDao;
@@ -56,7 +65,8 @@ public class SearchBookActivity extends Activity {
     //BookViewModel bookViewModel;
     ActivitySearchBookBinding binding;
     private ArrayList<Book> mbookList = new ArrayList<>();
-    private ArrayList<BookNameUrl> bookNameUrls = new ArrayList<>();
+    private ArrayList<BookNameUrl> bookNameUrls1 = new ArrayList<>();
+    private ArrayList<BookNameUrl> bookNameUrls2 = new ArrayList<>();
     private static final String[] suggestion2 = {"斗罗大陆4终极斗罗","左道倾天","诡秘之主","元尊","天下第九","三寸人间","万族之劫"};
     private static final String[] suggestion1 = {"魔法始记","猎手准则","万相之王","半仙","海兰萨领主","放开那只妖宠","武练巅峰"};
     private int suggestionflag;
@@ -176,40 +186,46 @@ public class SearchBookActivity extends Activity {
 
         }
     }
-    Call<String> DataCall;
     private void getData(){
         //清除之前输入的图书搜索记录
         mbookList.clear();
-        /*String urlbase = "https://www.wqge.cc/modules/article/search.php?searchkey="+searchKey;
-        Log.e("TAG", "get == url：" + urlbase);
-        OkHttpUtil.getInstance().Getwithparms(urlbase, "search1", new okhttp3.Callback() {
+        String url = URLCONST.method_tl_search+searchKey;
+        OkHttpUtil.getInstance().Get(url, new Callback() {
             @Override
-            public void onFailure(@NotNull okhttp3.Call call, @NotNull IOException e) {
-                Log.e("TAG", "get回调失败2：" + e.getMessage() + "," + e.toString());
-                mHandler.sendMessage(mHandler.obtainMessage(3));
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                Log.e(TAG, "天籁小说get回调搜索内容失败：");
             }
 
             @Override
-            public void onResponse(@NotNull okhttp3.Call call, @NotNull okhttp3.Response response) throws IOException {
-                String body = Objects.requireNonNull(response.body()).toString();
-                Log.e("TAG", "get回调失败2："+body);
-                bookNameUrls= BiQuGeReadUtil.getBooksUrlFromSearchHtml(body);
-                getDatainfo();
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
+
+                mbookList.addAll(TianLaiReadUtil.getBooksFromSearchHtml(body));
+                Log.e(TAG, mbookList.toString());
+                mHandler.sendMessage(mHandler.obtainMessage(3));
+                mHandler.sendMessage(mHandler.obtainMessage(2));
             }
-        });*/
+        });
+    }
+    /*private void getData(){
+        //清除之前输入的图书搜索记录
+        mbookList.clear();
+
         // 步骤5:创建网络请求接口对象实例
-        BookApi api = mRetrofit.create(BookApi.class);
+        /*BookApi api = mRetrofit.create(BookApi.class);
         //步骤6：对发送请求进行封装，传入接口参数
-        //Call<ResponseBody> jsonDataCall = api.getJsonData(searchKey);
-        DataCall = api.getData(searchKey);
+        //Call<ResponseBody> jsonDataCall = api.getData(searchKey);
+                //api.getJsonData(searchKey);
+        Call<String> DataCall = api.getData("searchKey");
         //步骤7:发送网络请求(异步)
         Log.e("TAG", "get == url：" + DataCall.request().url());
         DataCall.enqueue(new Callback<String>() {
             @Override
             public void onResponse(@NotNull Call<String> call, @NotNull Response<String> response) {
                 String body = response.body();
+                //Log.e("TAG",body);
                 bookNameUrls= BiQuGeReadUtil.getBooksUrlFromSearchHtml(body);
-                getDatainfo();
+                //getDatainfo();
                 //mHandler.sendMessage(mHandler.obtainMessage(2));
             }
 
@@ -218,19 +234,42 @@ public class SearchBookActivity extends Activity {
                 Log.e("TAG", "get回调失败2：" + t.getMessage() + "," + t.toString());
                 mHandler.sendMessage(mHandler.obtainMessage(3));
             }
-        });
+        });*/
+       /* String url="https://www.yingsx.com/cse/search?q="+searchKey+"&s=";
+        OkHttpUtil.getInstance().Get(url, new okhttp3.Callback() {
+            @Override
+            public void onFailure(@NotNull okhttp3.Call call, @NotNull IOException e) {
+                Log.e("TAG", "get回调失败1：" + e.getMessage() + "," + e.toString());
+            }
 
-    }
+            @Override
+            public void onResponse(@NotNull okhttp3.Call call, @NotNull okhttp3.Response response) throws IOException {
+                String body = Objects.requireNonNull(response.body()).string();
+                //Log.e("TAG",body);
+                bookNameUrls2= YingSxReadUtil.getBooksUrlFromSearchHtml(body);
+                //bookNameUrls.addAll(YingSxReadUtil.getBooksUrlFromSearchHtml(body));
+                getDatainfo();
+            }
+        });*
+    }*/
     private void getDatainfo(){
-        Log.e("ss",bookNameUrls.size()+"");
+        Log.e("ss",bookNameUrls2.size()+"");
         //没有搜索到书
-        if(bookNameUrls.size()==0){
+        if(bookNameUrls2.size()==0){
             mHandler.sendMessage(mHandler.obtainMessage(4));
         }
         else {
-            for (int i = 0; i < bookNameUrls.size(); i++) {
-                String url = bookNameUrls.get(i).getBooknameurl();
- 	            OkHttpUtil.getInstance().Getwithparms(url,"search", new okhttp3.Callback() {
+            for (int i = 0; i < bookNameUrls2.size(); i++) {
+         /*   int max;
+            if(bookNameUrls.size()>10) {
+                max = 10;
+            }
+            else {
+                max = bookNameUrls.size();
+            }
+            for (int i = 0; i < max; i++) {*/
+                String url = bookNameUrls2.get(i).getBooknameurl();
+                OkHttpUtil.getInstance().Get(url, new okhttp3.Callback() {
                     @Override
                     public void onFailure(@NotNull okhttp3.Call call, @NotNull IOException e) {
                         Log.e("TAG", "get回调失败1：");
@@ -241,40 +280,13 @@ public class SearchBookActivity extends Activity {
                     public void onResponse(@NotNull okhttp3.Call call, @NotNull okhttp3.Response response) throws IOException {
                         String body = Objects.requireNonNull(response.body()).string();
                         try {
-                            BiQuGeReadUtil.getBookInfo(body, mbookList);
+                            mbookList.addAll(YingSxReadUtil.getBookInfo(body));
                         } catch (IndexOutOfBoundsException e) {
-                            mHandler.sendMessage(mHandler.obtainMessage(3));
+                             mHandler.sendMessage(mHandler.obtainMessage(3));
                         }
-
-                        mHandler.sendMessage(mHandler.obtainMessage(2));
+                         mHandler.sendMessage(mHandler.obtainMessage(2));
                     }
                 });
-/*
-                OkHttpClient okHttpClient = new OkHttpClient();
-                final Request request = new Request.Builder()
-                        .url(url)
-                        .get()//默认就是GET请求，可以不写
-                        .build();
-                okhttp3.Call call = okHttpClient.newCall(request);
-                call.enqueue(new okhttp3.Callback() {
-                    @Override
-                    public void onFailure(@NotNull okhttp3.Call call, @NotNull IOException e) {
-                        Log.e("TAG", "get回调失败：");
-                        mHandler.sendMessage(mHandler.obtainMessage(3));
-                    }
-
-                    @Override
-                    public void onResponse(@NotNull okhttp3.Call call, @NotNull okhttp3.Response response) throws IOException {
-                        String body = response.body().string();
-                        try {
-                            BiQuGeReadUtil.getBookInfo(body, mbookList);
-                        } catch (IndexOutOfBoundsException e) {
-                            mHandler.sendMessage(mHandler.obtainMessage(3));
-                        }
-
-                        mHandler.sendMessage(mHandler.obtainMessage(2));
-                    }
-                });*/
             }
         }
     }
@@ -319,10 +331,6 @@ public class SearchBookActivity extends Activity {
         searchBookAdapter.setOnItemClickListener(new SearchBookAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Log.e("TAG", "lailefffdf：");
-                //DataCall.cancel();
-                OkHttpUtil.getInstance().Canale("search1");
-                OkHttpUtil.getInstance().Canale("search");
                 Intent intent = new Intent(SearchBookActivity.this, BookInfoActivity.class);
                 intent.putExtra(APPCONST.BOOK, mbookList.get(position));
                 startActivity(intent);

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.read.R;
 import com.example.read.Room.Entity.Book;
+import com.example.read.Room.Entity.Chapter;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -28,12 +29,12 @@ public class TianLaiReadUtil {
      * @return
      */
     public static String getContentFormHtml(String html) {
-
         Document doc = Jsoup.parse(html);
         Element divContent = doc.getElementById("content");
-
+        //解决划动进度条跳转章节闪退问题
         if (divContent != null) {
             String content = Html.fromHtml(divContent.html()).toString();
+            content =content.replace("\n\n","\n");
             char c = 160;
             String spaec = "" + c;
             content = content.replace(spaec, "  ");
@@ -42,13 +43,12 @@ public class TianLaiReadUtil {
             return "";
         }
     }
-
     /**
      * 从html中获取章节列表
      *
      * @param html
      * @return
-
+     */
     public static ArrayList<Chapter> getChaptersFromHtml(String html, Book book) {
         ArrayList<Chapter> chapters = new ArrayList<>();
         Document doc = Jsoup.parse(html);
@@ -70,11 +70,12 @@ public class TianLaiReadUtil {
                 chapter.setNumber(i++);
                 chapter.setTitle(title);
                 String url = a.attr("href");
-                if (StringHelper.isEmpty(book.getSource()) || BookSource.tianlai.toString().equals(book.getSource())) {
+                if (StringHelper.isEmpty(book.getSource()) || URLCONST.tianlai.equals(book.getSource())) {
                     url = URLCONST.nameSpace_tianlai + url;
-                } else if (BookSource.biquge.toString().equals(book.getSource())) {
-                    url = book.getChapterUrl() + url;
                 }
+               /* else if (BookSource.biquge.toString().equals(book.getSource())) {
+                    url = book.getChapterUrl() + url;
+                }*/
                 chapter.setUrl(url);
                 chapters.add(chapter);
                 lastTile = title;
@@ -84,7 +85,7 @@ public class TianLaiReadUtil {
 
         return chapters;
     }
-     */
+
     /**
      * 从搜索html中得到书列表
      *
@@ -94,39 +95,44 @@ public class TianLaiReadUtil {
     public static ArrayList<Book> getBooksFromSearchHtml(String html) {
         ArrayList<Book> books = new ArrayList<>();
         Document doc = Jsoup.parse(html);
-//        Element node = doc.getElementById("results");
-//        for (Element div : node.children()) {
-        Elements divs = doc.getElementsByClass("result-list");
-        Element div = divs.get(0);
-//        if (!StringHelper.isEmpty(div.className()) && div.className().equals("result-list")) {
-        for (Element element : div.children()) {
+        Element div = doc.getElementsByClass("details").first();
+        for (Element element : div.getElementsByClass("item-pic")) {
             Book book = new Book();
-            Element img = element.child(0).child(0).child(0);
-            book.setImgUrl(img.attr("src"));
-            Element title = element.getElementsByClass("result-item-title result-game-item-title").get(0);
-            book.setBook_name(title.child(0).attr("title"));
-            //book.setChapterUrl(URLCONST.nameSpace_tianlai + title.child(0).attr("href"));
+            Element img = element.getElementsByTag("img").first();
+            book.setImgUrl(URLCONST.nameSpace_tianlai + img.attr("src"));
+            Element info = element.getElementsByClass("result-game-item-detail").first();
 
-            Element desc = element.getElementsByClass("result-game-item-desc").get(0);
-            book.setDesc(desc.text());
-            Element info = element.getElementsByClass("result-game-item-info").get(0);
-            for (Element element1 : info.children()) {
-                String infoStr = element1.text();
-                if (infoStr.contains("作者：")) {
+            for (Element el : info.children()) {
+
+                String infoStr = el.text();
+
+                if (el.tagName().equals("h3")){
+
+                    Element a = el.getElementsByTag("a").first();
+                    book.setChapterUrl(URLCONST.nameSpace_tianlai + a.attr("href"));
+                    book.setBook_name(a.text());
+
+                }else if(el.className().equals("intro")){
+                    book.setDesc(el.text());
+
+                }else if (infoStr.contains("作者：")) {
+                    infoStr = infoStr.substring(0,infoStr.indexOf("状态"));
                     book.setAuthor(infoStr.replace("作者：", "").replace(" ", ""));
                 } else if (infoStr.contains("类型：")) {
                     book.setType(infoStr.replace("类型：", "").replace(" ", ""));
-               // } else if(infoStr.contains("更新时间：")) {
-               //     book.setUpdateDate(infoStr.replace("更新时间：", "").replace(" ", ""));
-                }else {
-                    Element newChapter = element1.child(1);
-                    //book.setNewestChapterUrl(newChapter.attr("href"));
-                    //book.setNewestChapterTitle(newChapter.text());
+                }else if (infoStr.contains("更新时间：")) {
+                    book.setUpdateDate(infoStr.replace("更新时间：", "").replace(" ", ""));
                 }
+                else if(infoStr.contains("最新章节")) {
+                    Element newChapter = el.getElementsByTag("a").first();
+                    book.setNewestChapterUrl(URLCONST.nameSpace_tianlai + newChapter.attr("href"));
+                    book.setNewestChapterTitle(newChapter.text());
+                }
+
             }
 
+            book.setSource(URLCONST.tianlai);
             books.add(book);
-            Log.e("gggg",book.toString());
 
         }
 

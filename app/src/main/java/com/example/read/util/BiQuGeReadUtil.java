@@ -208,8 +208,7 @@ public class BiQuGeReadUtil {
      * 获取书籍详细信息
      *
      */
-    public static ArrayList<Book> getBookInfo(String html,ArrayList<Book> books) {
-
+    /*public static ArrayList<Book> getBookInfo(String html,ArrayList<Book> books) {
             Book book =new Book();
             Document doc = Jsoup.parse(html);
             Element meta = doc.getElementsByAttributeValue("property","og:novel:read_url").get(0);
@@ -226,6 +225,26 @@ public class BiQuGeReadUtil {
             book.setType(type.getElementsByTag("a").get(2).text());
             books.add(book);
             Log.e("bookinfo",book.toString());
+        return books;
+    }*/
+    public static ArrayList<Book> getBookInfo(String html) {
+        ArrayList<Book> books= new ArrayList<>();
+        Book book =new Book();
+        Document doc = Jsoup.parse(html);
+        Element meta = doc.getElementsByAttributeValue("property","og:novel:read_url").get(0);
+        book.setChapterUrl(meta.attr("content"));
+        Element name = doc.getElementById("info");
+        book.setBook_name(name.getElementsByTag("h1").get(0).text());
+        Element author = doc.getElementById("info");
+        book.setAuthor(author.getElementsByTag("p").get(0).text());
+        Element img = doc.getElementById("fmimg");
+        book.setImgUrl(img.getElementsByTag("img").get(0).attr("src"));
+        Element desc = doc.getElementById("intro");
+        book.setDesc(desc.getElementsByTag("p").get(0).text());
+        Element type = doc.getElementsByClass("con_top").get(0);
+        book.setType(type.getElementsByTag("a").get(2).text());
+        books.add(book);
+        Log.e("bookinfo",book.toString());
         return books;
     }
     /**

@@ -29,6 +29,7 @@ import com.example.read.ui.activity.SearchBookActivity;
 import com.example.read.ui.adapter.BookcaseDragAdapter;
 import com.example.read.util.BiQuGeReadUtil;
 import com.example.read.util.OkHttpUtil;
+import com.example.read.util.TianLaiReadUtil;
 import com.example.read.util.VibratorUtil;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -222,7 +223,7 @@ public class BookmarkFragment extends Fragment {
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                     String body = Objects.requireNonNull(response.body()).string();
                     //Log.e("body",body);
-                    final ArrayList<Chapter> chapters = BiQuGeReadUtil.getChaptersFromHtml(body,book);
+                    final ArrayList<Chapter> chapters = TianLaiReadUtil.getChaptersFromHtml(body,book);
                     //updateAllOldChapterData(mChapters);
                     int noReadNum = chapters.size() - book.getChapterTotalNum();
                     if (noReadNum > 0) {

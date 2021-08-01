@@ -24,6 +24,7 @@ import com.example.read.util.BiQuGeReadUtil;
 import com.example.read.util.OkHttpUtil;
 import com.example.read.util.StringHelper;
 import com.example.read.util.SysManager;
+import com.example.read.util.TianLaiReadUtil;
 
 
 import org.jetbrains.annotations.NotNull;
@@ -188,8 +189,9 @@ public class ReadContentAdapter extends RecyclerView.Adapter<ReadContentAdapter.
 
                         @Override
                         public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                            String body = Objects.requireNonNull(response.body()).string();
-                            String content = BiQuGeReadUtil.getContentFormHtml(body);
+                            //String body = Objects.requireNonNull(response.body()).string();
+                            String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
+                            String content = TianLaiReadUtil.getContentFormHtml(body);
                             chapter.setContent(content);
                             if(viewHolder!=null){
                                 mHandler.post(new Runnable() {

@@ -19,20 +19,12 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ScrollView;
-
-
 import com.example.read.R;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Copyright (C), 2008-2015, Huawei Tech. Co., Ltd.
- * <p/>
  * Description : 拖动排序布局
- *
- * @version V100R001
- * @since V100R001
  */
 @SuppressLint({"NewApi", "Override"})
 public class DragSortGridView extends FrameLayout {
@@ -57,7 +49,7 @@ public class DragSortGridView extends FrameLayout {
     /**
      * 持有子view
      */
-    private List<View> mChilds = new ArrayList<View>();
+    private final List<View> mChilds = new ArrayList<>();
     private static final int TAG_KEY = R.id.first;
     // private static final int TAG_KEY = R.id.tag_key;
     private int mCurrentY = 0;
@@ -90,7 +82,7 @@ public class DragSortGridView extends FrameLayout {
     /**
      * 适配器的观察者,观察适配器的数据改变
      */
-    private DataSetObserver observer = new DataSetObserver() {
+    private final DataSetObserver observer = new DataSetObserver() {
         @Override
         public void onChanged() {
             mChildCount = adapter.getCount();
@@ -109,7 +101,7 @@ public class DragSortGridView extends FrameLayout {
     /**
      * 手势监听器,滚动和单击
      */
-    private GestureDetector.SimpleOnGestureListener simpleOnGestureListener = new GestureDetector.SimpleOnGestureListener() {
+    private final GestureDetector.SimpleOnGestureListener simpleOnGestureListener = new GestureDetector.SimpleOnGestureListener() {
 
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
@@ -301,8 +293,6 @@ public class DragSortGridView extends FrameLayout {
     }
 
     /**
-     * Author :[pWX273343] 2015年7月22日
-     * <p>
      * Description :拦截所有事件
      */
     @Override
@@ -379,10 +369,9 @@ public class DragSortGridView extends FrameLayout {
     }
 
     /**
-     * @param ev 事件
-     * @return 0中间区域, 1底部,-1顶部
-     * @描述: 检查当前触摸事件位于哪个区域, 顶部1/5可能触发下滚,底部1/5可能触发上滚
-     * @作者 [pWX273343] 2015年6月30日
+     * ev 事件
+     * return 0中间区域, 1底部,-1顶部
+     * 检查当前触摸事件位于哪个区域, 顶部1/5可能触发下滚,底部1/5可能触发上滚
      */
     private int decodeTouchArea(MotionEvent ev) {
         if (ev.getY() > getHeight() * 4 / (double) 5) {
@@ -395,10 +384,7 @@ public class DragSortGridView extends FrameLayout {
     }
 
     /**
-     * @param ev
-     * @return
-     * @描述 得到事件触发点, 摸到的是哪一个item
-     * @作者 [pWX273343] 2015年7月6日
+     * 描述 得到事件触发点, 摸到的是哪一个item
      */
     public int eventToPosition(MotionEvent ev) {
 
@@ -430,9 +416,7 @@ public class DragSortGridView extends FrameLayout {
     // }
 
     /**
-     * @param dragPosition
-     * @描述:复制一个镜像,并添加到透明层
-     * @作者 [pWX273343] 2015年7月6日
+     * 描述:复制一个镜像,并添加到透明层
      */
     private void copyView(int dragPosition) {
         hideView = mChilds.get(dragPosition);
@@ -463,10 +447,7 @@ public class DragSortGridView extends FrameLayout {
     }
 
     /**
-     * @param from
-     * @param to
-     * @描述:动画效果移动View
-     * @作者 [pWX273343] 2015年6月24日
+     * 描述:动画效果移动View
      */
     private void translateView(int from, int to) {
         View view = mChilds.get(from);
@@ -482,10 +463,7 @@ public class DragSortGridView extends FrameLayout {
     }
 
     /**
-     * @param from
-     * @param to
-     * @描述:拖动View使位置发生改变时
-     * @作者 [pWX273343] 2015年7月6日
+     * 描述:拖动View使位置发生改变时
      */
     private void onDragPositionChange(int from, int to) {
         if (from > to) {
@@ -508,12 +486,7 @@ public class DragSortGridView extends FrameLayout {
 
     /**
      * Function :setAdapter
-     * <p/>
-     * Author :[pWX273343] 2015年6月24日
-     * <p/>
      * Description :设置适配器.该适配器必须实现一个方法,当view的位置发生变动时,对实际数据的改动
-     *
-     * @param adapter
      * @see GridView#setAdapter(android.widget.ListAdapter)
      */
     public void setAdapter(DragAdapter adapter) {
@@ -573,9 +546,7 @@ public class DragSortGridView extends FrameLayout {
     };
 
     /**
-     * @param scrollStates
-     * @描述:触摸区域改变,做相应处理,开始滚动或停止滚动
-     * @作者 [pWX273343] 2015年6月29日
+     * 描述:触摸区域改变,做相应处理,开始滚动或停止滚动
      */
     protected void onTouchAreaChange(int scrollStates) {
         if (!canScroll) {
@@ -603,8 +574,7 @@ public class DragSortGridView extends FrameLayout {
     private OnDragSelectListener onDragSelectListener;
 
     /**
-     * @描述:一个item view刚被拖拽和放下时起来生成镜像时调用.
-     * @作者 [pWX273343] 2015年6月30日
+     * 描述:一个item view刚被拖拽和放下时起来生成镜像时调用.
      */
     public void setOnDragSelectListener(OnDragSelectListener onDragSelectListener) {
         this.onDragSelectListener = onDragSelectListener;
@@ -613,15 +583,13 @@ public class DragSortGridView extends FrameLayout {
     public interface OnDragSelectListener {
         /**
          * @param mirror 所拖拽起来的view生成的镜像 ,并不是实际的view.可对这个镜像实施变换效果,但是并不改变放下后的效果
-         * @描述:拖拽起一个view时调用
-         * @作者 [pWX273343] 2015年6月30日
+         * 描述:拖拽起一个view时调用
          */
         void onDragSelect(View mirror);
 
         /**
          * @param itemView
-         * @描述:拖拽的View放下时调用
-         * @作者 [pWX273343] 2015年7月3日
+         * 描述:拖拽的View放下时调用
          */
         void onPutDown(View itemView);
     }
@@ -633,9 +601,7 @@ public class DragSortGridView extends FrameLayout {
         }
 
         /**
-         * @return
-         * @描述:兼容老版本的getColumWidth
-         * @作者 [pWX273343] 2015年7月1日
+         * 描述:兼容老版本的getColumWidth
          */
         public int getColumnWidth() {
             return getWidth() / getNumColumns();
@@ -653,13 +619,7 @@ public class DragSortGridView extends FrameLayout {
     }
 
     /**
-     * Copyright (C), 2008-2015, Huawei Tech. Co., Ltd.
-     * <p>
      * Description : 监听滚动的scrollview,我们需要实时知道他已滚动的距离
-     *
-     * @author [pWX273343] 2015年7月22日
-     * @version V100R001
-     * @since V100R001
      */
     class ListenScrollView extends ScrollView {
         public ListenScrollView(Context context) {
@@ -685,8 +645,7 @@ public class DragSortGridView extends FrameLayout {
 
     /**
      * @param itemClickListener
-     * @描述:item 转交给gridview一些常用监听器
-     * @作者 [pWX273343] 2015年7月27日
+     * 描述:item 转交给gridview一些常用监听器
      */
     public void setOnItemClickListener(AdapterView.OnItemClickListener itemClickListener) {
         mGridView.setOnItemClickListener(itemClickListener);
@@ -694,8 +653,6 @@ public class DragSortGridView extends FrameLayout {
 
     /**
      * 长按监听器自己触发,点击拖动模式不存在长按
-     *
-     * @param
      */
     public void setOnItemLongClickListener(AdapterView.OnItemLongClickListener itemLongClickListener) {
         this.itemLongClickListener = itemLongClickListener;
@@ -715,8 +672,7 @@ public class DragSortGridView extends FrameLayout {
 
     /**
      * @param mode int类型
-     * @描述:设置拖动的策略是点击还是长按
-     * @作者 [pWX273343] 2015年7月20日 参考 DRAG_WHEN_TOUCH,DRAG_BY_LONG_CLICK
+     * 描述:设置拖动的策略是点击还是长按
      */
     public void setDragModel(int mode) {
         this.mDragMode = mode;
@@ -746,8 +702,6 @@ public class DragSortGridView extends FrameLayout {
 
     /**
      * 设置长按需要用时
-     *
-     * @param time
      */
     public void setDragLongPressTime(long time) {
         dragLongPressTime = time;
@@ -755,8 +709,6 @@ public class DragSortGridView extends FrameLayout {
 
     /**
      * 设置触摸事件冲突父控件
-     *
-     * @param touchClashparent
      */
     public void setTouchClashparent(ViewGroup touchClashparent) {
         this.touchClashparent = touchClashparent;

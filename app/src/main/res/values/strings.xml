@@ -40,4 +40,8 @@
     <string name="history">history</string>
     <string name="add_book">加入书架</string>
     <string name="bookname">bookname</string>
+    <string name="edit">编辑</string>
+    <string name="complete">完成</string>
+    <string name="book_souce">书源</string>
+    <string name="newchapter">最新章节</string>
 </resources>

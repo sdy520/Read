@@ -23,9 +23,9 @@ public class OkHttpUtil {
         okHttpClient = new OkHttpClient();
         //请求超时设置
         okHttpClient.newBuilder()
-                    .connectTimeout(10, TimeUnit.SECONDS)
-                    .readTimeout(10, TimeUnit.SECONDS)
-                    .writeTimeout(10, TimeUnit.SECONDS)
+                    //.connectTimeout(10, TimeUnit.SECONDS)
+                    //.readTimeout(10, TimeUnit.SECONDS)
+                    //.writeTimeout(10, TimeUnit.SECONDS)
                     .build();
     }
     /**
