@@ -29,21 +29,16 @@ public class TianLaiReadUtil {
      * @return
      */
     public static String getContentFormHtml(String html) {
-        char c = 160;
-        String spaec = "" + c;
-        String temp=html.replace("&nbsp;",spaec);
-        Document doc = Jsoup.parse(temp);
+        Document doc = Jsoup.parse(html);
         Element divContent = doc.getElementById("content");
         //解决划动进度条跳转章节闪退问题
         if (divContent != null) {
             String content = Html.fromHtml(divContent.html()).toString();
             Log.e("",content);
             content =content.replace("\n\n","\n");
-            //content =content.replaceAll(" ","  ");
-            content =content.replace("\\s+", "    ");
-          /*  char c = 160;
+            char c = 160;
             String spaec = "" + c;
-            content = content.replaceAll(spaec, "  ");*/
+            content = content.replaceAll(spaec, "  ");
             return content;
         } else {
             return "";

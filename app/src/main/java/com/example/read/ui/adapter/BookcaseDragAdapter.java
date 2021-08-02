@@ -160,6 +160,7 @@ public class BookcaseDragAdapter extends DragAdapter {
                     Intent intent = new Intent( mContext, BookInfoActivity.class);
                     intent.putExtra(APPCONST.BOOK, book);
                     book.setNoReadNum(0);
+                    //bookDao.updateBook(book);
                     //mBookService.updateEntity(book);
                     mContext.startActivity(intent);
                 }

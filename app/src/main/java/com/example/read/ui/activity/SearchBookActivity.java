@@ -195,37 +195,38 @@ public class SearchBookActivity extends Activity {
         OkHttpUtil.getInstance().Get(url1, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Log.e(TAG, "天籁小说get回调搜索内容失败：");
+                Log.e(TAG, "天籁小说get回调搜索内容失败："+e.toString());
                 mHandler.sendMessage(mHandler.obtainMessage(3));
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
-                Log.e(TAG, "111");
-                mbookList.addAll(TianLaiReadUtil.getBooksFromSearchHtml(body));
-                Log.e(TAG, "222");
-                Log.e(TAG, mbookList.toString());
+                try {
+                    String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
+                    mbookList.addAll(TianLaiReadUtil.getBooksFromSearchHtml(body));
+                    mHandler.sendMessage(mHandler.obtainMessage(2));
+                }catch (Exception e){
+                    Log.e(TAG, "天籁小说解析出错："+e.toString());
+                }
 
-                mHandler.sendMessage(mHandler.obtainMessage(2));
             }
         });
         OkHttpUtil.getInstance().Get(url2, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Log.e(TAG, "多本小说get回调搜索内容失败：");
+                Log.e(TAG, "多本小说get回调搜索内容失败："+e.toString());
                 mHandler.sendMessage(mHandler.obtainMessage(3));
             }
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
-                Log.e(TAG, "333");
-                mbookList.addAll(DuoBenReadUtil.getBooksFromSearchHtml(body));
-                Log.e(TAG, "444");
-                Log.e(TAG, mbookList.toString());
-                //mHandler.sendMessage(mHandler.obtainMessage(3));
-                mHandler.sendMessage(mHandler.obtainMessage(2));
+                try{
+                    String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
+                    mbookList.addAll(DuoBenReadUtil.getBooksFromSearchHtml(body));
+                    mHandler.sendMessage(mHandler.obtainMessage(2));
+                }catch (Exception e){
+                    Log.e(TAG, "多本小说解析出错："+e.toString());
+                }
             }
         });
     }

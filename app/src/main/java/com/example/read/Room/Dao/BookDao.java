@@ -17,7 +17,8 @@ public interface BookDao {
     void insertBook(Book book);
     @Query("SELECT * FROM Book where book_name=:book_name")
     boolean isInBookList(String book_name);
-    @Query("SELECT * FROM Book ORDER BY ID DESC")
+    //@Query("SELECT * FROM Book ORDER BY ID DESC")
+    @Query("SELECT * FROM Book ORDER BY SORTCODE")
     List<Book> getAllBooks();
     @Delete
     void deleteBook(Book book);

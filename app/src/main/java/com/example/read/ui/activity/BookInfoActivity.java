@@ -39,11 +39,13 @@ import com.example.read.ui.adapter.ReadContentAdapter;
 import com.example.read.util.BiQuGeReadUtil;
 import com.example.read.util.BrightUtil;
 import com.example.read.util.DateHelper;
+import com.example.read.util.DuoBenReadUtil;
 import com.example.read.util.OkHttpUtil;
 import com.example.read.util.ReadStyle;
 import com.example.read.util.StringHelper;
 import com.example.read.util.SysManager;
 import com.example.read.util.TianLaiReadUtil;
+import com.example.read.util.URLCONST;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 
@@ -208,8 +210,10 @@ public class BookInfoActivity extends BaseActivity {
                         public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                            // String body = Objects.requireNonNull(response.body()).string();
                             String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
-                            if (!StringHelper.isEmpty(body))
+                            if (!StringHelper.isEmpty(body)&&mBook.getSource().equals(URLCONST.tianlai))
                                 mChapters.get(positionnow).setContent(TianLaiReadUtil.getContentFormHtml(body));
+                            else if(mBook.getSource().equals(URLCONST.duoben))
+                                mChapters.get(positionnow).setContent(DuoBenReadUtil.getContentFormHtml(body));
                             //mChapterService.saveOrUpdateChapter(mChapters.get(chapterNum));
                             mHandler.sendMessage(mHandler.obtainMessage(4, positionnow, 0));
                             Log.e("body", "333");
@@ -397,7 +401,10 @@ public class BookInfoActivity extends BaseActivity {
                 //String body = Objects.requireNonNull(response.body()).string();
                 String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
                 Log.e(TAG, body);
-                chapter.setContent(TianLaiReadUtil.getContentFormHtml(body));
+                if(mBook.getSource().equals(URLCONST.tianlai))
+                    chapter.setContent(TianLaiReadUtil.getContentFormHtml(body));
+                else if(mBook.getSource().equals(URLCONST.duoben))
+                    chapter.setContent(DuoBenReadUtil.getContentFormHtml(body));
                 mHandler.sendMessage(mHandler.obtainMessage(1));
                 Log.e("body", "2222");
             }
@@ -448,7 +455,7 @@ public class BookInfoActivity extends BaseActivity {
             mLinearLayoutManager = new LinearLayoutManager(this);
             mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             bookInfoBinding.rvContent.setLayoutManager(mLinearLayoutManager);
-            mReadContentAdapter = new ReadContentAdapter(this, mChapters);
+            mReadContentAdapter = new ReadContentAdapter(this, mChapters,mBook);
             initReadViewOnClick();
             bookInfoBinding.rvContent.setAdapter(mReadContentAdapter);
         } else {
@@ -688,8 +695,10 @@ public class BookInfoActivity extends BaseActivity {
                                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                                     //String body = Objects.requireNonNull(response.body()).string();
                                     String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
-                                    if(!StringHelper.isEmpty(body))
+                                    if(!StringHelper.isEmpty(body)&&mBook.getSource().equals(URLCONST.tianlai))
                                         mChapters.get(chapterNum).setContent(TianLaiReadUtil.getContentFormHtml(body));
+                                    else if(mBook.getSource().equals(URLCONST.duoben))
+                                        mChapters.get(chapterNum).setContent(DuoBenReadUtil.getContentFormHtml(body));
                                     //mChapterService.saveOrUpdateChapter(mChapters.get(chapterNum));
                                     mHandler.sendMessage(mHandler.obtainMessage(4, chapterNum, 0));
                                     Log.e("body", "333");

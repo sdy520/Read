@@ -27,7 +27,6 @@ import com.example.read.databinding.FragmentBookmarkBinding;
 import com.example.read.ui.activity.MainActivity;
 import com.example.read.ui.activity.SearchBookActivity;
 import com.example.read.ui.adapter.BookcaseDragAdapter;
-import com.example.read.util.BiQuGeReadUtil;
 import com.example.read.util.OkHttpUtil;
 import com.example.read.util.TianLaiReadUtil;
 import com.example.read.util.VibratorUtil;
@@ -46,12 +45,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link BookmarkFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class BookmarkFragment extends Fragment {
+    private static String TAG = "BookmarkFragment";
     private FragmentBookmarkBinding bookmarkBinding;
     private Activity mactivity;
     private ArrayList<Book> mBooks = new ArrayList<>();//书目数组
@@ -59,36 +55,10 @@ public class BookmarkFragment extends Fragment {
     MainActivity mMainActivity;
     private BookcaseDragAdapter mBookcaseAdapter;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     public BookmarkFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BookmarkFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static BookmarkFragment newInstance(String param1, String param2) {
-        BookmarkFragment fragment = new BookmarkFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @Override
@@ -108,10 +78,6 @@ public class BookmarkFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
         mMainActivity = ((MainActivity)getContext());
         bookDao= BookDatabase.getDatabase(mactivity).getBookDao();
     }
@@ -145,6 +111,8 @@ public class BookmarkFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 if (!mBookcaseAdapter.ismEditState()) {
+                    //关闭viewpage2的滑动
+                    mMainActivity.getVpContent().setUserInputEnabled(false);
                     bookmarkBinding.srlContent.setEnableRefresh(false);
                     mBookcaseAdapter.setmEditState(true);
                     bookmarkBinding.gvBook.setDragModel(DragSortGridView.DRAG_BY_LONG_CLICK);
@@ -159,6 +127,8 @@ public class BookmarkFragment extends Fragment {
             }
         });
         mMainActivity.getTvEditFinish().setOnClickListener(v -> {
+            //打开viewpage2的滑动
+            mMainActivity.getVpContent().setUserInputEnabled(true);
             mMainActivity.getRlCommonTitle().setVisibility(View.VISIBLE);
             mMainActivity.getRlEditTitile().setVisibility(View.GONE);
 //                mBookcaseFragment.getSrlContent().setEnableRefresh(true);
@@ -177,7 +147,7 @@ public class BookmarkFragment extends Fragment {
         initBook();
 
         if (mBooks == null || mBooks.size() == 0) {
-            Log.e("sdff","mBooks.get(i).getBook_name()");
+            Log.e(TAG,"mBooks.get(i).getBook_name()");
             bookmarkBinding.gvBook.setVisibility(View.GONE);
             bookmarkBinding.llNoDataTips.setVisibility(View.VISIBLE);
         } else {
@@ -211,63 +181,36 @@ public class BookmarkFragment extends Fragment {
     private void initNoReadNum() {
         for (final Book book : mBooks) {
             String url = book.getChapterUrl();
-            Log.e("ddddddd",url);
+            Log.e(TAG,url);
             OkHttpUtil.getInstance().Get(url, new Callback() {
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                    Log.e("TAG", "get回调失败：");
+                    Log.e(TAG, "get回调失败：");
                     mHandler.sendMessage(mHandler.obtainMessage(1));
                 }
 
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                    String body = Objects.requireNonNull(response.body()).string();
-                    //Log.e("body",body);
-                    final ArrayList<Chapter> chapters = TianLaiReadUtil.getChaptersFromHtml(body,book);
-                    //updateAllOldChapterData(mChapters);
-                    int noReadNum = chapters.size() - book.getChapterTotalNum();
-                    if (noReadNum > 0) {
-                        book.setNoReadNum(noReadNum);
-                        mHandler.sendMessage(mHandler.obtainMessage(1));
-                    } else {
-                        book.setNoReadNum(0);
-                        mHandler.sendMessage(mHandler.obtainMessage(2));
+                    try{
+                        String body = Objects.requireNonNull(response.body()).string();
+                        //Log.e("body",body);
+                        final ArrayList<Chapter> chapters = TianLaiReadUtil.getChaptersFromHtml(body,book);
+                        //updateAllOldChapterData(mChapters);
+                        int noReadNum = chapters.size() - book.getChapterTotalNum();
+                        if (noReadNum > 0) {
+                            book.setNoReadNum(noReadNum);
+                            mHandler.sendMessage(mHandler.obtainMessage(1));
+                        } else {
+                            book.setNoReadNum(0);
+                            mHandler.sendMessage(mHandler.obtainMessage(2));
+                        }
+                        bookDao.updateBook(book);
+                    }catch (Exception e){
+                        Log.e(TAG, "初始页更新章节出错");
                     }
-                    bookDao.updateBook(book);
+
                 }
             });
-            /*OkHttpClient okHttpClient = new OkHttpClient();
-            final Request request = new Request.Builder()
-                    .url(url)
-                    .get()//默认就是GET请求，可以不写
-                    .build();
-            okhttp3.Call call =okHttpClient.newCall(request);
-            call.enqueue(new okhttp3.Callback() {
-                @Override
-                public void onFailure(@NotNull okhttp3.Call call, @NotNull IOException e) {
-                    Log.e("TAG", "get回调失败：");
-                    mHandler.sendMessage(mHandler.obtainMessage(1));
-                }
-
-                @Override
-                public void onResponse(@NotNull okhttp3.Call call, @NotNull okhttp3.Response response) throws IOException {
-                    String body = response.body().string();
-                    //Log.e("body",body);
-                    final ArrayList<Chapter> chapters = BiQuGeReadUtil.getChaptersFromHtml(body,book);
-                    //updateAllOldChapterData(mChapters);
-                    int noReadNum = chapters.size() - book.getChapterTotalNum();
-                    if (noReadNum > 0) {
-                        book.setNoReadNum(noReadNum);
-                        mHandler.sendMessage(mHandler.obtainMessage(1));
-                    } else {
-                        book.setNoReadNum(0);
-                        mHandler.sendMessage(mHandler.obtainMessage(2));
-                    }
-                    bookDao.updateBook(book);
-
-                }
-            });*/
-
         }
     }
     @Override
@@ -287,7 +230,6 @@ public class BookmarkFragment extends Fragment {
             for (int i = 0; i < mBooks.size(); i++) {
                 if (mBooks.get(i).getSortCode() != i + 1) {
                     mBooks.get(i).setSortCode(i + 1);
-
                     bookDao.updateBook(mBooks.get(i));
                     Log.e("sdff",mBooks.get(i).getBook_name());
                 }

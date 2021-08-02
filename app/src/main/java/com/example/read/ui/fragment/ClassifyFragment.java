@@ -96,7 +96,7 @@ public class ClassifyFragment extends Fragment {
             @SuppressLint("ShowToast")
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent1;
+                /*Intent intent1;
                 if(position==0) {
                     intent1 = new Intent(mactivity, RankingActivity.class);
                     intent1.putExtra("hang", "1");
@@ -147,7 +147,7 @@ public class ClassifyFragment extends Fragment {
                 }
                 //Toast.makeText(mactivity,bookClassifies.get(position).getClassifytext(),Toast.LENGTH_SHORT).show();
                 Log.e("aa",bookClassifies.get(position).getClassifytext());
-                Log.e("aa", String.valueOf(position));
+                Log.e("aa", String.valueOf(position));*/
             }
         });
         return classifyBinding.getRoot();

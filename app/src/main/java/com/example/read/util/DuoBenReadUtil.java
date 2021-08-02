@@ -61,11 +61,13 @@ public class DuoBenReadUtil {
 
         Document doc = Jsoup.parse(html);
         Element divContent = doc.getElementById("content");
+        String[] contenttext;
         //解决划动进度条跳转章节闪退问题
         if (divContent != null) {
             String content = Html.fromHtml(divContent.html()).toString();
             content =content.replace("\n\n","\n");
-            return content;
+            contenttext =content.split("https");
+            return contenttext[0];
         } else {
             return "";
         }

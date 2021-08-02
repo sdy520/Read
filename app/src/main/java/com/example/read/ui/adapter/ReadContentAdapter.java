@@ -18,13 +18,16 @@ import com.example.read.MyApplication;
 import com.example.read.R;
 import com.example.read.Room.Dao.ChapterDao;
 import com.example.read.Room.Database.ChapterDatabase;
+import com.example.read.Room.Entity.Book;
 import com.example.read.Room.Entity.Chapter;
 import com.example.read.custom.MyTextView;
 import com.example.read.util.BiQuGeReadUtil;
+import com.example.read.util.DuoBenReadUtil;
 import com.example.read.util.OkHttpUtil;
 import com.example.read.util.StringHelper;
 import com.example.read.util.SysManager;
 import com.example.read.util.TianLaiReadUtil;
+import com.example.read.util.URLCONST;
 
 
 import org.jetbrains.annotations.NotNull;
@@ -42,6 +45,7 @@ import okhttp3.Response;
 public class ReadContentAdapter extends RecyclerView.Adapter<ReadContentAdapter.ViewHold> {
     private RecyclerView rvContent;
     private ArrayList<Chapter> mDatas;
+    private Book mbook;
     private Context mContext;
     private Setting mSetting;
     private ChapterDao chapterDao;
@@ -72,12 +76,12 @@ public class ReadContentAdapter extends RecyclerView.Adapter<ReadContentAdapter.
             }
         }
     };
-    public ReadContentAdapter(Context context, ArrayList<Chapter> datas) {
+    public ReadContentAdapter(Context context, ArrayList<Chapter> datas,Book book) {
         mDatas = datas;
         mContext = context;
         chapterDao = ChapterDatabase.getDatabase(context).getChapterDao();
         mSetting = SysManager.getSetting();
-
+        mbook = book;
     }
 
     @NonNull
@@ -120,7 +124,6 @@ public class ReadContentAdapter extends RecyclerView.Adapter<ReadContentAdapter.
 
     private void initView(final int postion, final ViewHold viewHolder) {
         final Chapter chapter = getItem(postion);
-
         viewHolder.tvErrorTips.setVisibility(View.GONE);
         viewHolder.tvTitle.setText("【" + chapter.getTitle() + "】");
         if (mSetting.isDayStyle()) {
@@ -191,13 +194,18 @@ public class ReadContentAdapter extends RecyclerView.Adapter<ReadContentAdapter.
                         public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                             //String body = Objects.requireNonNull(response.body()).string();
                             String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
-                            String content = TianLaiReadUtil.getContentFormHtml(body);
+                            String content = null;
+                            if(mbook.getSource().equals(URLCONST.tianlai))
+                                content = TianLaiReadUtil.getContentFormHtml(body);
+                            else if(mbook.getSource().equals(URLCONST.duoben))
+                                content = DuoBenReadUtil.getContentFormHtml(body);
                             chapter.setContent(content);
                             if(viewHolder!=null){
+                                String finalContent = content;
                                 mHandler.post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        viewHolder.tvContent.setText(content);
+                                        viewHolder.tvContent.setText(finalContent);
                                         viewHolder.tvContent.setLineSpacing(add,mult);
                                         viewHolder.tvErrorTips.setVisibility(View.GONE);
                                         Log.e("readadapter", "111");
