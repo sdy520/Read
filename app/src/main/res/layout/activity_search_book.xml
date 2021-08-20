@@ -35,7 +35,7 @@
                     android:layout_margin="5dip"
                     android:onClick="onback"
                     android:src="@drawable/ic_baseline_arrow_back_ios_24"
-                    tools:ignore="ContentDescription" />
+                    tools:ignore="ContentDescription,UsingOnClickInXml" />
             </LinearLayout>
 
             <TextView
@@ -134,7 +134,7 @@
                     android:focusable="true"
                     android:focusableInTouchMode="false"
                     android:clickable="true"
-                    tools:ignore="ContentDescription" />
+                    tools:ignore="ContentDescription,UsingOnClickInXml" />
 
                 <TextView
                     android:id="@+id/textchange"
@@ -146,7 +146,8 @@
                     android:focusableInTouchMode="false"
                     android:clickable="true"
                     android:onClick="imagechange"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    tools:ignore="UsingOnClickInXml" />
             </LinearLayout>
         </LinearLayout>
 

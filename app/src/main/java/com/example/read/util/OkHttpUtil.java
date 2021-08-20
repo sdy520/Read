@@ -55,6 +55,15 @@ public class OkHttpUtil {
         call = okHttpClient.newCall(request);
         call.enqueue(callback);
     }
+    public void Getwithhead(String url, Callback callback){
+        final Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Content-Type","text/plain; charset=utf-8")
+                .build();
+        //.get()默认就是GET请求，可以不写
+        call = okHttpClient.newCall(request);
+        call.enqueue(callback);
+    }
     public void Getwithparms(String url,String tag, Callback callback){
         final Request request = new Request.Builder()
                 .url(url)

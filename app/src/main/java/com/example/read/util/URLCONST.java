@@ -10,7 +10,8 @@ public class URLCONST {
     public static String bxwx = "笔下文学";
     public static String duoben = "多本小说";
     // 命名空间
-    public static String nameSpace_tianlai = "https://www.tlai.cc";
+    //public static String nameSpace_tianlai = "https://m.23sk.com";
+    public static String nameSpace_tianlai = "https://www.tianlaixsw.com";
     public static String nameSpace_bxwx = "https://www.bxwxorg.com";
     public static String nameSpace_duoben = "https://www.duoben.net";
 
@@ -20,7 +21,8 @@ public class URLCONST {
     public static boolean isRSA = false;
 
     // 搜索小说
-    public static String method_tl_search = "https://www.tlai.cc/search.php?searchkey=";
+    //public static String method_tl_search = "https://m.23sk.com/search.php?q=";
+    public static String method_tl_search = "https://www.tianlaixsw.com/search.html,searchkey={key}&searchtype=all";
     public static String method_db_search = "https://www.duoben.net/s123.php?ie=gbk&q=";
 
     // 获取最新版本号

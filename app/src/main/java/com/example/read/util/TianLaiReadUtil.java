@@ -33,12 +33,11 @@ public class TianLaiReadUtil {
         Element divContent = doc.getElementById("content");
         //解决划动进度条跳转章节闪退问题
         if (divContent != null) {
-            String content = Html.fromHtml(divContent.html()).toString();
-            Log.e("",content);
-            content =content.replace("\n\n","\n");
-            char c = 160;
+            String content = "        "+Html.fromHtml(divContent.html()).toString();
+            content =content.replace("\n\n","\n        ");
+            /*char c = 160;
             String spaec = "" + c;
-            content = content.replaceAll(spaec, "  ");
+            content = content.replaceAll(spaec, "  ");*/
             return content;
         } else {
             return "";
@@ -59,7 +58,6 @@ public class TianLaiReadUtil {
         }else if(URLCONST.duoben.equals(book.getSource())){
             divList = doc.getElementById("book");
         }
-        assert divList != null;
         Element dl = divList.getElementsByTag("dl").get(0);
 
         String lastTile = null;
@@ -98,7 +96,7 @@ public class TianLaiReadUtil {
      * @param html
      * @return
      */
-    public static ArrayList<Book> getBooksFromSearchHtml(String html) {
+    /*public static ArrayList<Book> getBooksFromSearchHtml(String html) {
         ArrayList<Book> books = new ArrayList<>();
         Document doc = Jsoup.parse(html);
         Element div = doc.getElementsByClass("details").first();
@@ -135,6 +133,45 @@ public class TianLaiReadUtil {
         }
 
         return books;
-    }
+    }*/
+    public static ArrayList<Book> getBooksFromSearchHtml(String html) {
+        ArrayList<Book> books = new ArrayList<>();
+        Document doc = Jsoup.parse(html);
+        Element div = doc.getElementById("sitembox");
+        for (Element element : div.getElementsByTag("dl")) {
 
+            Book book = new Book();
+            Element img = element.getElementsByTag("img").first();
+            book.setImgUrl(img.attr("src"));
+            Log.e("img",img.attr("src"));
+            Element booklink = element.getElementsByTag("h3").first();
+            Element a = booklink.getElementsByTag("a").first();
+            book.setChapterUrl(URLCONST.nameSpace_tianlai + a.attr("href"));
+            book.setBook_name(a.text());
+            Log.e("img",a.attr("href"));
+            Log.e("img",a.text());
+            Element info = element.getElementsByClass("book_des").first();
+            book.setDesc(info.text());
+            Log.e("img",info.text());
+            Element infostr = element.getElementsByClass("book_other").first();
+            int i=0;
+            for (Element el : infostr.children()) {
+                i++;
+                if(i==1)
+                    book.setAuthor(el.text());
+                if(i==3)
+                    book.setType(el.text());
+            }
+            Element newChapters = element.getElementsByClass("book_other").last();
+            Element newChapter = newChapters.getElementsByTag("a").first();
+            book.setNewestChapterUrl(URLCONST.nameSpace_tianlai + newChapter.attr("href"));
+            book.setNewestChapterTitle(newChapter.text());
+            Log.e("img",newChapter.text());
+
+            book.setSource(URLCONST.tianlai);
+            books.add(book);
+
+        }
+        return books;
+    }
 }

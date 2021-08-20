@@ -54,8 +54,10 @@ public class ReadContentAdapter extends RecyclerView.Adapter<ReadContentAdapter.
     private float mult=1.5f;
 
     public class ViewHold extends RecyclerView.ViewHolder {
-        MyTextView tvTitle;
-        MyTextView tvContent;
+        TextView tvTitle;
+        TextView tvContent;
+       /* MyTextView tvTitle;
+        MyTextView tvContent;*/
         TextView tvErrorTips;
         public ViewHold(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -193,12 +195,17 @@ public class ReadContentAdapter extends RecyclerView.Adapter<ReadContentAdapter.
                         @Override
                         public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                             //String body = Objects.requireNonNull(response.body()).string();
-                            String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
+                            //String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
+                            String body;
                             String content = null;
-                            if(mbook.getSource().equals(URLCONST.tianlai))
+                            if(mbook.getSource().equals(URLCONST.tianlai)) {
+                                body = Objects.requireNonNull(response.body()).string();
                                 content = TianLaiReadUtil.getContentFormHtml(body);
-                            else if(mbook.getSource().equals(URLCONST.duoben))
+                            }
+                            else if(mbook.getSource().equals(URLCONST.duoben)) {
+                                body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
                                 content = DuoBenReadUtil.getContentFormHtml(body);
+                            }
                             chapter.setContent(content);
                             if(viewHolder!=null){
                                 String finalContent = content;
@@ -213,41 +220,6 @@ public class ReadContentAdapter extends RecyclerView.Adapter<ReadContentAdapter.
                                 });}
                         }
                     });
-                    /*OkHttpClient okHttpClient1 = new OkHttpClient();
-                    final Request request = new Request.Builder()
-                            .url(url1)
-                            .get()//默认就是GET请求，可以不写
-                            .build();
-                    okhttp3.Call call1 = okHttpClient1.newCall(request);
-                    call1.enqueue(new okhttp3.Callback() {
-                        @Override
-                        public void onFailure(@NotNull okhttp3.Call call, @NotNull IOException e) {
-                            Log.e("TAG", "get回调失败：");
-                            if (viewHolder != null) {
-                                mHandler.sendMessage(mHandler.obtainMessage(1, viewHolder));
-                            }
-                        }
-
-                        @Override
-                        public void onResponse(@NotNull okhttp3.Call call, @NotNull okhttp3.Response response) throws IOException {
-                            String body = response.body().string();
-                            String content = BiQuGeReadUtil.getContentFormHtml(body);
-                            chapter.setContent(content);
-                            if(viewHolder!=null){
-                            mHandler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    viewHolder.tvContent.setText(content);
-
-                                    viewHolder.tvContent.setLineSpacing(add,mult);
-
-                                    viewHolder.tvErrorTips.setVisibility(View.GONE);
-                                    Log.e("readadapter", "111");
-                                }
-                            });}
-
-                        }
-                    });*/
                 }
             }
         });

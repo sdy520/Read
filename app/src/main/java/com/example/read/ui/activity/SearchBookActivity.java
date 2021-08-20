@@ -190,7 +190,7 @@ public class SearchBookActivity extends Activity {
     private void getData(){
         //清除之前输入的图书搜索记录
         mbookList.clear();
-        String url1 = URLCONST.method_tl_search+searchKey;
+        String url1 = "https://www.tianlaixsw.com/search.html?searchkey="+searchKey+"&searchtype=all";
         String url2 = URLCONST.method_db_search+searchKey;
         OkHttpUtil.getInstance().Get(url1, new Callback() {
             @Override
@@ -202,7 +202,9 @@ public class SearchBookActivity extends Activity {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 try {
-                    String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
+                    //String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
+                    String body = Objects.requireNonNull(response.body()).string();
+                    Log.e(TAG, body);
                     mbookList.addAll(TianLaiReadUtil.getBooksFromSearchHtml(body));
                     mHandler.sendMessage(mHandler.obtainMessage(2));
                 }catch (Exception e){
@@ -257,23 +259,7 @@ public class SearchBookActivity extends Activity {
                 Log.e("TAG", "get回调失败2：" + t.getMessage() + "," + t.toString());
                 mHandler.sendMessage(mHandler.obtainMessage(3));
             }
-        });*/
-       /* String url="https://www.yingsx.com/cse/search?q="+searchKey+"&s=";
-        OkHttpUtil.getInstance().Get(url, new okhttp3.Callback() {
-            @Override
-            public void onFailure(@NotNull okhttp3.Call call, @NotNull IOException e) {
-                Log.e("TAG", "get回调失败1：" + e.getMessage() + "," + e.toString());
-            }
-
-            @Override
-            public void onResponse(@NotNull okhttp3.Call call, @NotNull okhttp3.Response response) throws IOException {
-                String body = Objects.requireNonNull(response.body()).string();
-                //Log.e("TAG",body);
-                bookNameUrls2= YingSxReadUtil.getBooksUrlFromSearchHtml(body);
-                //bookNameUrls.addAll(YingSxReadUtil.getBooksUrlFromSearchHtml(body));
-                getDatainfo();
-            }
-        });*
+        });
     }*/
     /*private void getDatainfo(){
         Log.e("ss",bookNameUrls2.size()+"");

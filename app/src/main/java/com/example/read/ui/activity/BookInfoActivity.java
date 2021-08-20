@@ -208,12 +208,18 @@ public class BookInfoActivity extends BaseActivity {
 
                         @Override
                         public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                           // String body = Objects.requireNonNull(response.body()).string();
-                            String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
-                            if (!StringHelper.isEmpty(body)&&mBook.getSource().equals(URLCONST.tianlai))
+                            //String body = Objects.requireNonNull(response.body()).string();
+                            //String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
+                            String body;
+                            //f (!StringHelper.isEmpty(body)&&mBook.getSource().equals(URLCONST.tianlai)) {
+                            if (mBook.getSource().equals(URLCONST.tianlai)) {
+                                body = Objects.requireNonNull(response.body()).string();
                                 mChapters.get(positionnow).setContent(TianLaiReadUtil.getContentFormHtml(body));
-                            else if(mBook.getSource().equals(URLCONST.duoben))
+                            }
+                            else if(mBook.getSource().equals(URLCONST.duoben)) {
+                                body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
                                 mChapters.get(positionnow).setContent(DuoBenReadUtil.getContentFormHtml(body));
+                            }
                             //mChapterService.saveOrUpdateChapter(mChapters.get(chapterNum));
                             mHandler.sendMessage(mHandler.obtainMessage(4, positionnow, 0));
                             Log.e("body", "333");
@@ -324,8 +330,8 @@ public class BookInfoActivity extends BaseActivity {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                //String body = Objects.requireNonNull(response.body()).string();
-                String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
+                String body = Objects.requireNonNull(response.body()).string();
+                //String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
                 Log.e(TAG,body);
                 try {
                     mChapters = TianLaiReadUtil.getChaptersFromHtml(body,mBook);
@@ -399,12 +405,16 @@ public class BookInfoActivity extends BaseActivity {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 //String body = Objects.requireNonNull(response.body()).string();
-                String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
-                Log.e(TAG, body);
-                if(mBook.getSource().equals(URLCONST.tianlai))
+                //String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
+                String body;
+                if(mBook.getSource().equals(URLCONST.tianlai)) {
+                    body = Objects.requireNonNull(response.body()).string();
                     chapter.setContent(TianLaiReadUtil.getContentFormHtml(body));
-                else if(mBook.getSource().equals(URLCONST.duoben))
+                }
+                else if(mBook.getSource().equals(URLCONST.duoben)) {
+                    body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
                     chapter.setContent(DuoBenReadUtil.getContentFormHtml(body));
+                }
                 mHandler.sendMessage(mHandler.obtainMessage(1));
                 Log.e("body", "2222");
             }
@@ -694,11 +704,17 @@ public class BookInfoActivity extends BaseActivity {
                                 @Override
                                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                                     //String body = Objects.requireNonNull(response.body()).string();
-                                    String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
-                                    if(!StringHelper.isEmpty(body)&&mBook.getSource().equals(URLCONST.tianlai))
+                                    //String body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
+                                    String body;
+                                    //if(!StringHelper.isEmpty(body)&&mBook.getSource().equals(URLCONST.tianlai)) {
+                                    if(mBook.getSource().equals(URLCONST.tianlai)) {
+                                        body = Objects.requireNonNull(response.body()).string();
                                         mChapters.get(chapterNum).setContent(TianLaiReadUtil.getContentFormHtml(body));
-                                    else if(mBook.getSource().equals(URLCONST.duoben))
+                                    }
+                                    else if(mBook.getSource().equals(URLCONST.duoben)) {
+                                        body = new String(Objects.requireNonNull(response.body()).bytes(), "gbk");
                                         mChapters.get(chapterNum).setContent(DuoBenReadUtil.getContentFormHtml(body));
+                                    }
                                     //mChapterService.saveOrUpdateChapter(mChapters.get(chapterNum));
                                     mHandler.sendMessage(mHandler.obtainMessage(4, chapterNum, 0));
                                     Log.e("body", "333");
